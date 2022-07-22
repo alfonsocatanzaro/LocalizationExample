@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
 using LocalizationExample;
-using LocalizationExample.Localize;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using RazorEngine;
+using RazorEngine.Templating;
 
 namespace LocalizationExample.Controllers
 {
@@ -13,18 +14,21 @@ namespace LocalizationExample.Controllers
     [Route("[controller]")]
     public class HomeController : ControllerBase
     {
-        private readonly IStringLocalizer<Resource> _stringLocalizer;
-        public HomeController(IStringLocalizer<Resource> stringLocalizer)
+        private readonly IStringLocalizer<CosoResource> _stringLocalizer;
+        public HomeController(IStringLocalizer<CosoResource> stringLocalizer)
         {
             _stringLocalizer = stringLocalizer;
         }
 
+
         [HttpGet]
         public string Get()
         {
-            var value = _stringLocalizer["Hello"];
+            Lazy<string> salute = new Lazy<string>(() => _stringLocalizer.GetString("Hello"));
 
-            return value;
+
+            var result = Engine.Razor.RunCompile("@(DateTime.Now) @Model.salute", "test", null, new {salute= salute.Value});
+            return result;
         }
     }
 }

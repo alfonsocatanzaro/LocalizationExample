@@ -40,7 +40,8 @@ namespace LocalizationExample
                 var supportedCultures = new[]
                 {
                     new CultureInfo("en-US"),
-                    new CultureInfo("de")
+                    new CultureInfo("de"),
+                    new CultureInfo("it")
                 };
 
                 options.SupportedCultures = supportedCultures;
@@ -54,7 +55,7 @@ namespace LocalizationExample
 
                     if (defaultLanguage != "de" && defaultLanguage != "en-US")
                     {
-                        defaultLanguage = "en-US";
+                       // defaultLanguage = "en-US";
                     }
 
                     return Task.FromResult(new ProviderCultureResult(defaultLanguage, defaultLanguage));
